@@ -1,0 +1,37 @@
+{
+   "abstract" : "A simple blackboard database and dispatcher.",
+   "author" : [
+      "unknown"
+   ],
+   "dynamic_config" : 1,
+   "generated_by" : "Module::Build version 0.38, CPAN::Meta::Converter version 2.112150",
+   "license" : [
+      "unknown"
+   ],
+   "meta-spec" : {
+      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+      "version" : "2"
+   },
+   "name" : "AnyEvent-Blackboard",
+   "prereqs" : {
+      "configure" : {
+         "requires" : {
+            "Module::Build" : "0.38"
+         }
+      },
+      "runtime" : {
+         "requires" : {
+            "AnyEvent" : 0,
+            "Mouse" : 0
+         }
+      }
+   },
+   "provides" : {
+      "AnyEvent::Blackboard" : {
+         "file" : "lib/AnyEvent/Blackboard.pm",
+         "version" : "v0.2.2"
+      }
+   },
+   "release_status" : "stable",
+   "version" : "v0.2.2"
+}
