@@ -1,12 +1,9 @@
 ---
 abstract: 'A simple blackboard database and dispatcher.'
-author:
-  - unknown
-build_requires: {}
+author: []
 configure_requires:
-  Module::Build: 0.38
-dynamic_config: 1
-generated_by: 'Module::Build version 0.38, CPAN::Meta::Converter version 2.112150'
+  Module::Build: 0.36
+generated_by: 'Module::Build version 0.3603'
 license: unknown
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -15,8 +12,8 @@ name: AnyEvent-Blackboard
 provides:
   AnyEvent::Blackboard:
     file: lib/AnyEvent/Blackboard.pm
-    version: v0.2.3
+    version: v0.2.4
 requires:
   AnyEvent: 0
   Mouse: 0
-version: v0.2.3
+version: v0.2.4
