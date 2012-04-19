@@ -4,7 +4,7 @@
       "unknown"
    ],
    "dynamic_config" : 1,
-   "generated_by" : "Module::Build version 0.38, CPAN::Meta::Converter version 2.112150",
+   "generated_by" : "Module::Build version 0.4, CPAN::Meta::Converter version 2.112150",
    "license" : [
       "unknown"
    ],
@@ -16,7 +16,7 @@
    "prereqs" : {
       "configure" : {
          "requires" : {
-            "Module::Build" : "0.38"
+            "Module::Build" : "0.4"
          }
       },
       "runtime" : {
@@ -29,9 +29,9 @@
    "provides" : {
       "AnyEvent::Blackboard" : {
          "file" : "lib/AnyEvent/Blackboard.pm",
-         "version" : "v0.2.4"
+         "version" : "v0.2.5"
       }
    },
    "release_status" : "stable",
-   "version" : "v0.2.3"
+   "version" : "v0.2.5"
 }
