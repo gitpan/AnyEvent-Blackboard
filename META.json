@@ -29,9 +29,9 @@
    "provides" : {
       "AnyEvent::Blackboard" : {
          "file" : "lib/AnyEvent/Blackboard.pm",
-         "version" : "v0.2.5"
+         "version" : "v0.2.6"
       }
    },
    "release_status" : "stable",
-   "version" : "v0.2.5"
+   "version" : "v0.2.6"
 }
