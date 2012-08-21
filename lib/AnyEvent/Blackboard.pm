@@ -49,53 +49,40 @@ use strict;
 use warnings FATAL => "all";
 use Mouse;
 use AnyEvent;
+use Scalar::Util ();
 
-our $VERSION = 0.3.3;
+our $VERSION = 0.3.4;
 
-=for comment
+=head1 ATTRIBUTES
 
-The _objects present in this blackboard instance.
+=over 4
 
 =cut
 
+# The _objects present in this blackboard instance.
 has _objects   => (
     is      => "rw",
     isa     => "HashRef[Any]",
     default => sub { {} }
 );
 
-=for comment
-
-A hash reference of callbacks for each watcher, with the key for the watcher as
-its key.
-
-=cut
-
+# A hash reference of callbacks for each watcher, with the key for the watcher
+# as its key.
 has _watchers  => (
     is      => "rw",
     isa     => "HashRef[ArrayRef[CodeRef]]",
     default => sub { {} }
 );
 
-=for comment
-
-A hash table with which has each watcher as a key, and array reference to an
-array of interested keys as a value.
-
-=cut
-
+# A hash table with which has each watcher as a key, and array reference to an
+# array of interested keys as a value.
 has _interests => (
     is      => "rw",
     isa     => "HashRef[ArrayRef[Str]]",
     default => sub { {} }
 );
 
-=for comment
-
-The hangup flag.
-
-=cut
-
+# The hangup flag.
 has _hangup => (
     is       => "rw",
     isa      => "Bool",
@@ -168,6 +155,8 @@ sub build {
 
     return $blackboard;
 }
+
+=back
 
 =head1 METHODS
 
@@ -341,6 +330,22 @@ sub put {
             $self->found($key);
         }
     }
+}
+
+=item weaken KEY
+
+Weaken the reference to KEY.
+
+When the value placed on the blackboard should *not* have a strong reference
+(for instance, a circular reference to the blackboard), use this method to
+weaken the value reference to the value associated with the key.
+
+=cut
+
+sub weaken {
+    my ($self, $key) = @_;
+
+    Scalar::Util::weaken $self->_objects->{$key};
 }
 
 =item delete KEY [, KEY ...]

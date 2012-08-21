@@ -2,7 +2,9 @@
 abstract: 'A simple blackboard database and dispatcher.'
 author:
   - unknown
-build_requires: {}
+build_requires:
+  BSD::Resource: 0
+  EV: 0
 configure_requires:
   Module::Build: 0.4
 dynamic_config: 1
@@ -15,9 +17,9 @@ name: AnyEvent-Blackboard
 provides:
   AnyEvent::Blackboard:
     file: lib/AnyEvent/Blackboard.pm
-    version: v0.3.3
+    version: v0.3.4
 requires:
   AnyEvent: 0
-  EV: 0
   Mouse: 0
-version: v0.3.3
+  Scalar::Util: 0
+version: v0.3.4

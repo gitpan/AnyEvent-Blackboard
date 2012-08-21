@@ -14,6 +14,12 @@
    },
    "name" : "AnyEvent-Blackboard",
    "prereqs" : {
+      "build" : {
+         "requires" : {
+            "BSD::Resource" : 0,
+            "EV" : 0
+         }
+      },
       "configure" : {
          "requires" : {
             "Module::Build" : "0.4"
@@ -22,17 +28,17 @@
       "runtime" : {
          "requires" : {
             "AnyEvent" : 0,
-            "EV" : 0,
-            "Mouse" : 0
+            "Mouse" : 0,
+            "Scalar::Util" : 0
          }
       }
    },
    "provides" : {
       "AnyEvent::Blackboard" : {
          "file" : "lib/AnyEvent/Blackboard.pm",
-         "version" : "v0.3.3"
+         "version" : "v0.3.4"
       }
    },
    "release_status" : "stable",
-   "version" : "v0.3.3"
+   "version" : "v0.3.4"
 }
