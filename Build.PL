@@ -7,15 +7,16 @@ my $build = Module::Build->new(
     version_from => "AnyEvent::Blackboard",
 
     requires     => {
-        "AnyEvent"     => 0,
-        "Mouse"        => 0,
-        "Scalar::Util" => 0,
+        "AnyEvent"          => 0,
+        "Async::Blackboard" => 0,
+        "Mouse"             => 0,
     },
 
     build_requires => {
         # For test....
         "EV"            => 0,
         "BSD::Resource" => 0,
+        "Devel::Leak"   => 0,
     },
 );
 

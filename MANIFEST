@@ -3,7 +3,7 @@ lib/all.PL
 lib/AnyEvent/Blackboard.pm
 LICENSE
 MANIFEST			This list of files
-README.rst
-t/01_watcher.t
-META.yml
 META.json
+META.yml
+README.rst
+t/01_timeouts.t

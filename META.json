@@ -1,10 +1,10 @@
 {
-   "abstract" : "A simple blackboard database and dispatcher.",
+   "abstract" : "An extension of Async::Blackboard which uses AnyEvent",
    "author" : [
       "unknown"
    ],
    "dynamic_config" : 1,
-   "generated_by" : "Module::Build version 0.4, CPAN::Meta::Converter version 2.112150",
+   "generated_by" : "Module::Build version 0.4003, CPAN::Meta::Converter version 2.120630",
    "license" : [
       "unknown"
    ],
@@ -16,29 +16,30 @@
    "prereqs" : {
       "build" : {
          "requires" : {
-            "BSD::Resource" : 0,
-            "EV" : 0
+            "BSD::Resource" : "0",
+            "Devel::Leak" : "0",
+            "EV" : "0"
          }
       },
       "configure" : {
          "requires" : {
-            "Module::Build" : "0.4"
+            "Module::Build" : "0.40"
          }
       },
       "runtime" : {
          "requires" : {
-            "AnyEvent" : 0,
-            "Mouse" : 0,
-            "Scalar::Util" : 0
+            "AnyEvent" : "0",
+            "Async::Blackboard" : "0",
+            "Mouse" : "0"
          }
       }
    },
    "provides" : {
       "AnyEvent::Blackboard" : {
          "file" : "lib/AnyEvent/Blackboard.pm",
-         "version" : "v0.3.4"
+         "version" : "v0.4.0"
       }
    },
    "release_status" : "stable",
-   "version" : "v0.3.4"
+   "version" : "v0.4.0"
 }
