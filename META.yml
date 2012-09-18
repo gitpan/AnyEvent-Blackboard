@@ -18,9 +18,9 @@ name: AnyEvent-Blackboard
 provides:
   AnyEvent::Blackboard:
     file: lib/AnyEvent/Blackboard.pm
-    version: v0.4.0
+    version: v0.4.1
 requires:
   AnyEvent: 0
-  Async::Blackboard: 0
+  Async::Blackboard: v0.3.6
   Mouse: 0
-version: v0.4.0
+version: v0.4.1
