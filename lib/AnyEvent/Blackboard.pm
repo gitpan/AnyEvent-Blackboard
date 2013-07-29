@@ -28,11 +28,10 @@ use strict;
 use warnings FATAL => "all";
 
 use AnyEvent;
-use Mouse;
+use parent qw( Async::Blackboard );
+use Carp qw( croak confess );
 
-extends qw( Async::Blackboard );
-
-our $VERSION = 0.4.2;
+our $VERSION = 0.4.6;
 
 =head1 ATTRIBUTES
 
@@ -46,17 +45,37 @@ Default timeout in (optionally fractional) seconds.
 
 =cut
 
-has default_timeout => (
-    is         => "ro",
-    isa        => "Num",
-    default    => 0,
-);
+=item condvar -> AnyEvent::CondVar
+
+A conditional variable to track dispatches. (optional)
+
+When supplied, each dispatch group will be wrapped in calls to ``begin'' and
+``end'' on condvar instance.
+
+=cut
+
+sub new {
+    my ($class, @arguments) = @_;
+
+    if (@arguments % 2) {
+        croak "AnyEvent::Blackboard->new() requires a balanced list";
+    }
+
+    my %options = @arguments;
+
+    my $self = $class->SUPER::new();
+
+    @$self{qw( -default_timeout -condvar )} =
+        @options{qw( default_timeout condvar )};
+
+    $self->{-condvar} //= AnyEvent->condvar;
+
+    return $self;
+}
 
 =back
 
 =cut
-
-no Mouse;
 
 =back
 
@@ -75,16 +94,20 @@ dead-end if a required value is difficult to obtain.
 sub timeout {
     my ($self, $seconds, $key, $default) = @_;
 
+    $key = [ $key ] unless (ref $key eq "ARRAY");
+
     unless ($self->has($key)) {
         my $guard = AnyEvent->timer(
             after => $seconds,
             cb    => sub {
-                $self->put($key => $default) unless $self->has($key);
+                unless ($self->has($key)) {
+                    $self->put($_ => $default) for @$key;
+                }
             }
         );
 
         # Cancel the timer if we find the object first (otherwise this is a NOOP).
-        $self->_watch([ $key ], sub { undef $guard });
+        $self->_watch($key, sub { undef $guard });
     }
 }
 
@@ -101,18 +124,43 @@ sub watch {
 
     confess "Expected balanced as arguments" if @args % 2;
 
-    if ($self->default_timeout) {
-        my $timeout = $self->default_timeout;
-        my @keys    = keys %{ { @args } };
+    my $timeout = $self->{-default_timeout};
 
-        for my $key (@keys) {
+    if ($timeout) {
+        my $i = 0;
+
+        for my $key (grep $i++ % 2 == 0, @args) {
             $self->timeout($timeout, $key);
         }
     }
 
-    return $self->SUPER::watch(@args);
+    $self->SUPER::watch(@args);
 }
 
+=item found KEY
+
+Wrap calls to ``found'' in condvar transaction counting, if a condvar is
+supplied.  The side-effect is that dispatching is wrapped in conditional
+variable counting.
+
+=cut
+
+sub found {
+    my ($self, @args) = @_;
+
+    if ($self->has_condvar) {
+        my $condvar = $self->condvar;
+
+        $condvar->begin;
+
+        $self->SUPER::found(@args);
+
+        $condvar->end;
+    }
+    else {
+        $self->SUPER::found(@args);
+    }
+}
 
 =item clone
 
@@ -126,13 +174,13 @@ sub clone {
 
     my $class = ref $self || __PACKAGE__;
 
-    my $default_timeout = $self->default_timeout;
+    my $default_timeout = $self->{-default_timeout};
 
     my $clone = $self->SUPER::clone;
 
     # This is a little on the side of evil...we're not supposed to know where
     # this value is stored.
-    $clone->{default_timeout} = $default_timeout;
+    $clone->{-default_timeout} = $default_timeout;
 
     # Add timeouts for all current watcher interests.  The timeout method
     # ignores keys that are already defined.

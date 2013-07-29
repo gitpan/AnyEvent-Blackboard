@@ -52,6 +52,8 @@ any events.
 subtest "Default Timeout" => sub {
     my $blackboard = AnyEvent::Blackboard->new(default_timeout => 0.02);
 
+    ok defined $blackboard, "Created blackboard...";
+
     my $condvar = AnyEvent->condvar;
 
     $condvar->begin;
@@ -64,7 +66,11 @@ subtest "Default Timeout" => sub {
             $condvar->end;
         });
 
+    note "Entering watch mode...";
+
     $condvar->recv;
+
+    note "Got condvar interrupt...";
 
     ok $blackboard->has("foo"), "foo should exist";
 
@@ -133,6 +139,26 @@ subtest "Timeout Canceled" => sub {
     ok $blackboard->has("foo"), "foo should be defined";
 
     done_testing;
+};
+
+=item Default timeout doesn't stringify arrayrefs.
+
+Ensure ``default_timeout'' doesn't create a bug in ``watch'' where it adds a
+watcher to an array refernece.
+
+=cut
+
+subtest "Default timeout doesn't stringify arrayrefs." => sub {
+    my $blackboard = AnyEvent::Blackboard->new(
+        default_timeout => 1
+    );
+
+    my $keys = [ sort qw( foo bar ) ];
+
+    $blackboard->watch($keys, sub { fail });
+
+    is_deeply [ sort $blackboard->watched ], $keys,
+    "watched list contains the expected results";
 };
 
 =item Clone
