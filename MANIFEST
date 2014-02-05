@@ -1,5 +1,4 @@
 Build.PL
-CHANGES
 lib/all.PL
 lib/AnyEvent/Blackboard.pm
 LICENSE
